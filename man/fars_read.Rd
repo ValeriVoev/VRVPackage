@@ -7,15 +7,15 @@
 fars_read(filename)
 }
 \arguments{
-\item{filename}{A path to a file. Files ending in .gz, .bz2, .xz, or .zip will be 
+\item{filename}{A path to a file. Files ending in .gz, .bz2, .xz, or .zip will be
 automatically uncompressed}
 }
 \value{
 A tibble data frame. If the file cannot be found an error is generated and execution is halted
 }
 \description{
-This function reads in a csv file, and if it exists converts it to a tibble data frame which 
-inherits properties from data.frame class. The tibble data frame is more suitable in some cases 
+This function reads in a csv file, and if it exists converts it to a tibble data frame which
+inherits properties from data.frame class. The tibble data frame is more suitable in some cases
 than standard data frame, as it, among other things, doesn't convert strings to factors, keeps
 orignal variable names (e.g., if they contain a space), uses a somewhat different print method, etc.
 }

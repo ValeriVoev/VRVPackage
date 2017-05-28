@@ -2,7 +2,7 @@
 % Please edit documentation in R/fars_functions.R
 \name{fars_map_state}
 \alias{fars_map_state}
-\title{Draw a map of accidents (from the Traffic Safety Administration's 
+\title{Draw a map of accidents (from the Traffic Safety Administration's
 Fatality Analysis Reporting System) for a given state and year}
 \usage{
 fars_map_state(state.num, year)
@@ -13,7 +13,7 @@ fars_map_state(state.num, year)
 \item{year}{A year value in \%Y format, the year for which the accidents will be plotted}
 }
 \value{
-\code{NULL}. This function is used for it's side effect, namely a map of the accidents 
+\code{NULL}. This function is used for it's side effect, namely a map of the accidents
     for a given state and year
 }
 \description{
@@ -25,6 +25,6 @@ The data for each year should be in format "accident_<year>.csv.bz2". If a state
    an error will be generated. State number 2 (Alaska) cannot be plotted.
 }
 \examples{
-fars_map_state(8, 2015)
+\dontrun{fars_map_state(8, 2015)}
 
 }

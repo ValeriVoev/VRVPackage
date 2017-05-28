@@ -8,7 +8,7 @@ for a particular year}
 make_filename(year)
 }
 \arguments{
-\item{year}{A year in \%Y format, e.g., \code{2013}. A vector of year values, e.g. \code{2013:2016} 
+\item{year}{A year in \%Y format, e.g., \code{2013}. A vector of year values, e.g. \code{2013:2016}
 can also be used}
 }
 \value{
@@ -16,11 +16,11 @@ A filename of the type "accident_<year>.csv.bz2", where year is the input. If a 
      is provided, the function will return a character vector of filenames
 }
 \description{
-This function constructs a filename of the type "accident_<year>.csv.bz2" which can then be 
+This function constructs a filename of the type "accident_<year>.csv.bz2" which can then be
 passed to \code{\link{fars_read}} to be loaded in the workspace as a tibble.
 }
 \note{
-Input should either be a 4-digit integer year number in \%Y format or 
+Input should either be a 4-digit integer year number in \%Y format or
     coercible to one (e.g., a string \code{"2013"})
 }
 \examples{

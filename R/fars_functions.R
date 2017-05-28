@@ -82,8 +82,9 @@ make_filename <- function(year) {
 #' uses \code{\link{make_filename}} to construct the filename to the dataset and \code{\link{fars_read}}
 #' to load the dataset as a tibble.
 #'
-#' @importFrom dplyr mutate select
+#' @importFrom dplyr mutate_ select_
 #' @importFrom magrittr "%>%"
+#' @importFrom stats setNames
 #'
 #' @export
 #'
@@ -123,8 +124,8 @@ fars_read_years <- function(years) {
 #' uses \code{\link{fars_read_years}} to extract the month and year variables from the Traffic Safety Administration's
 #' Fatality Analysis Reporting System annual datasets.
 #'
-#' @importFrom dplyr bind_rows group_by summarize
-#' @importFrom tidyr spread
+#' @importFrom dplyr bind_rows group_by_ summarize_
+#' @importFrom tidyr spread_
 #' @importFrom magrittr "%>%"
 #'
 #' @export
@@ -154,12 +155,12 @@ fars_summarize_years <- function(years) {
 #'     for a given state and year
 #'
 #' @examples
-#' \dontrun{fars_map_state(8, 2015)}
+#' fars_map_state(8, 2015)
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a state number is not recognized,
-#'    an error will be generated. State number 2 (Alaska) cannot be plotted.
+#'    an error will be generated. Some states (e.g., state number 2 (Alaska)) cannot be plotted.
 #'
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter_
 #' @importFrom maps map
 #' @importFrom graphics points
 #'
@@ -169,7 +170,7 @@ fars_summarize_years <- function(years) {
 
 fars_map_state <- function(state.num, year) {
         filename <- make_filename(year)
-        data <- fars_read(paste(filename))
+        data <- fars_read(system.file("extdata", filename, package = "VRVPackage"))
         state.num <- as.integer(state.num)
 
         if(!(state.num %in% unique(data$STATE)))

@@ -11,15 +11,15 @@ fars_read_years(years)
 \item{years}{A vector of year values in \%Y format, e.g., \code{2014}, or \code{2013:2015}}
 }
 \value{
-A list containing the month an year variable for each of the years of the Traffic Safety Administration's 
+A list containing the month an year variable for each of the years of the Traffic Safety Administration's
 Fatality Analysis Reporting System datasets
 }
 \description{
-This function constructs a list of tibbles containing the month and year variables for each year 
+This function constructs a list of tibbles containing the month and year variables for each year
 (one list element per year) for a set of years (e.g. \code{2013:2015}).
 }
 \note{
-The data for each year should be in format "accident_<year>.csv.bz2". If a file for a given year 
+The data for each year should be in format "accident_<year>.csv.bz2". If a file for a given year
 is not found a warning is printed out and the list element for that year is \code{NULL}. This function
 uses \code{\link{make_filename}} to construct the filename to the dataset and \code{\link{fars_read}}
 to load the dataset as a tibble.
