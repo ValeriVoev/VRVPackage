@@ -22,9 +22,9 @@ for a particular state and year.
 }
 \note{
 The data for each year should be in format "accident_<year>.csv.bz2". If a state number is not recognized,
-   an error will be generated. State number 2 (Alaska) cannot be plotted.
+   an error will be generated. Some states (e.g., state number 2 (Alaska)) cannot be plotted.
 }
 \examples{
-\dontrun{fars_map_state(8, 2015)}
+if (file.exists(make_filename(2015))) {fars_map_state(8, 2015)}
 
 }

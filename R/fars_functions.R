@@ -11,9 +11,7 @@
 #' @return A tibble data frame. If the file cannot be found an error is generated and execution is halted
 #'
 #' @examples
-#' fars_read("data/accident_2013.csv")
-#' fars_read("data/accident_2013.csv.bz2")
-#' fars_read(list.files("data", full.names = TRUE)[1])
+#' if (file.exists(make_filename(2015))) {fars_read(make_filename(2015))}
 #'
 #' @note The file to be read needs to be a csv or a compressed csv. Other file formats cannot be read with this function.
 #'
@@ -74,8 +72,8 @@ make_filename <- function(year) {
 #' Fatality Analysis Reporting System datasets
 #'
 #' @examples
-#' fars_read_years(2014)
-#' fars_read_years(2013:2015)
+#' if (file.exists(make_filename(2015))) {fars_read_years(2015)}
+#' if (any(file.exists(make_filename(2013:2015)))) {fars_read_years(2013:2015)}
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a file for a given year
 #' is not found a warning is printed out and the list element for that year is \code{NULL}. This function
@@ -116,8 +114,8 @@ fars_read_years <- function(years) {
 #' @return A tibble (in wide format) containing the number of cases for each month and year
 #'
 #' @examples
-#' fars_summarize_years(2014)
-#' fars_summarize_years(2013:2015)
+#' if (file.exists(make_filename(2015))) {fars_summarize_years(2015)}
+#' if (any(file.exists(make_filename(2013:2015)))) {fars_summarize_years(2013:2015)}
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". The input should be provided
 #' (or coercible into) as an integer vector in \%Y format (e.g., \code{2013:2015}). This function
@@ -155,7 +153,7 @@ fars_summarize_years <- function(years) {
 #'     for a given state and year
 #'
 #' @examples
-#' fars_map_state(8, 2015)
+#' if (file.exists(make_filename(2015))) {fars_map_state(8, 2015)}
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a state number is not recognized,
 #'    an error will be generated. Some states (e.g., state number 2 (Alaska)) cannot be plotted.
@@ -170,7 +168,7 @@ fars_summarize_years <- function(years) {
 
 fars_map_state <- function(state.num, year) {
         filename <- make_filename(year)
-        data <- fars_read(system.file("extdata", filename, package = "VRVPackage"))
+        data <- fars_read(paste(filename))
         state.num <- as.integer(state.num)
 
         if(!(state.num %in% unique(data$STATE)))

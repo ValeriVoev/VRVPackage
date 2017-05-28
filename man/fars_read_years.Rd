@@ -25,7 +25,7 @@ uses \code{\link{make_filename}} to construct the filename to the dataset and \c
 to load the dataset as a tibble.
 }
 \examples{
-fars_read_years(2014)
-fars_read_years(2013:2015)
+if (file.exists(make_filename(2015))) {fars_read_years(2015)}
+if (any(file.exists(make_filename(2013:2015)))) {fars_read_years(2013:2015)}
 
 }
