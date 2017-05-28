@@ -90,14 +90,14 @@ make_filename <- function(year) {
 
 
 fars_read_years <- function(years) {
-        lapply(years, function(year) {
-                file <- make_filename(year)
+        lapply(years, function(yr) {
+                file <- make_filename(yr)
                 tryCatch({
                         dat <- fars_read(file)
-                        dplyr::mutate(dat, year = year) %>%
-                                dplyr::select(MONTH, year)
+                        dplyr::mutate_(dat, .dots = setNames(list(~YEAR), "year")) %>%
+                                dplyr::select_(~MONTH, ~year)
                 }, error = function(e) {
-                        warning("invalid year: ", year)
+                        warning("invalid year: ", yr)
                         return(NULL)
                 })
         })
@@ -134,9 +134,9 @@ fars_read_years <- function(years) {
 fars_summarize_years <- function(years) {
         dat_list <- fars_read_years(years)
         dplyr::bind_rows(dat_list) %>%
-                dplyr::group_by(year, MONTH) %>%
-                dplyr::summarize(n = dplyr::n()) %>%
-                tidyr::spread(year, n)
+                dplyr::group_by_(~year, ~MONTH) %>%
+                dplyr::summarize_(.dots = setNames(list(~n()), "n")) %>%
+                tidyr::spread_("year", "n")
 }
 
 
@@ -154,7 +154,7 @@ fars_summarize_years <- function(years) {
 #'     for a given state and year
 #'
 #' @examples
-#' fars_map_state(8, 2015)
+#' \dontrun{fars_map_state(8, 2015)}
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a state number is not recognized,
 #'    an error will be generated. State number 2 (Alaska) cannot be plotted.
@@ -169,12 +169,12 @@ fars_summarize_years <- function(years) {
 
 fars_map_state <- function(state.num, year) {
         filename <- make_filename(year)
-        data <- fars_read(filename)
+        data <- fars_read(paste(filename))
         state.num <- as.integer(state.num)
 
         if(!(state.num %in% unique(data$STATE)))
                 stop("invalid STATE number: ", state.num)
-        data.sub <- dplyr::filter(data, STATE == state.num)
+        data.sub <- dplyr::filter_(data, ~STATE == state.num)
         if(nrow(data.sub) == 0L) {
                 message("no accidents to plot")
                 return(invisible(NULL))
