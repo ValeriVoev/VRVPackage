@@ -3,7 +3,7 @@ Title: Reads and maps traffic accident data
 Version: 0.0.0.9000
 Authors@R: person("Valeri", "Voev", email = "v_voev@yahoo.com", role = c("aut", "cre"))
 Description: This package contains functions to read data (from the Traffic Safety Administration's Fatality Analysis Reporting System) 
-    and map accidents by US state and year. For more information about the data visit [FARS](https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars)
+    and map accidents by US state and year. For more information about the data visit [FARS](https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars).
 Depends: R (>= 3.4.0)
 License: CC0
 Encoding: UTF-8
