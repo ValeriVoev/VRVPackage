@@ -24,7 +24,6 @@ uses \code{\link{fars_read_years}} to extract the month and year variables from 
 Fatality Analysis Reporting System annual datasets.
 }
 \examples{
-if (file.exists(make_filename(2015))) {fars_summarize_years(2015)}
-if (any(file.exists(make_filename(2013:2015)))) {fars_summarize_years(2013:2015)}
+fars_summarize_years(2015)
 
 }

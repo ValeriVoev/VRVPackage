@@ -25,6 +25,7 @@ The data for each year should be in format "accident_<year>.csv.bz2". If a state
    an error will be generated. Some states (e.g., state number 2 (Alaska)) cannot be plotted.
 }
 \examples{
-if (file.exists(make_filename(2015))) {fars_map_state(8, 2015)}
+require(maps)
+fars_map_state(8, 2015)
 
 }

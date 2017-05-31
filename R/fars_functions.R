@@ -11,7 +11,7 @@
 #' @return A tibble data frame. If the file cannot be found an error is generated and execution is halted
 #'
 #' @examples
-#' if (file.exists(make_filename(2015))) {fars_read(make_filename(2015))}
+#' fars_read(make_filename(2015))
 #'
 #' @note The file to be read needs to be a csv or a compressed csv. Other file formats cannot be read with this function.
 #'
@@ -22,8 +22,12 @@
 #'
 
 fars_read <- function(filename) {
+        if(!file.exists(filename)){
+                fprev <- filename
+                # Check for an example file in the package extdata
+                filename <- system.file("extdata", filename, package = "VRVPackage")}
         if(!file.exists(filename))
-                stop("file '", filename, "' does not exist")
+                stop("file '", fprev, "' does not exist and is not an example dataset")
         data <- suppressMessages({
                 readr::read_csv(filename, progress = FALSE)
         })
@@ -72,7 +76,7 @@ make_filename <- function(year) {
 #' Fatality Analysis Reporting System datasets
 #'
 #' @examples
-#' if (file.exists(make_filename(2015))) {fars_read_years(2015)}
+#' fars_read_years(2015)
 #' if (any(file.exists(make_filename(2013:2015)))) {fars_read_years(2013:2015)}
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a file for a given year
@@ -114,8 +118,7 @@ fars_read_years <- function(years) {
 #' @return A tibble (in wide format) containing the number of cases for each month and year
 #'
 #' @examples
-#' if (file.exists(make_filename(2015))) {fars_summarize_years(2015)}
-#' if (any(file.exists(make_filename(2013:2015)))) {fars_summarize_years(2013:2015)}
+#' fars_summarize_years(2015)
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". The input should be provided
 #' (or coercible into) as an integer vector in \%Y format (e.g., \code{2013:2015}). This function
@@ -153,7 +156,8 @@ fars_summarize_years <- function(years) {
 #'     for a given state and year
 #'
 #' @examples
-#' if (file.exists(make_filename(2015))) {fars_map_state(8, 2015)}
+#' require(maps)
+#' fars_map_state(8, 2015)
 #'
 #' @note The data for each year should be in format "accident_<year>.csv.bz2". If a state number is not recognized,
 #'    an error will be generated. Some states (e.g., state number 2 (Alaska)) cannot be plotted.
@@ -180,6 +184,7 @@ fars_map_state <- function(state.num, year) {
         }
         is.na(data.sub$LONGITUD) <- data.sub$LONGITUD > 900
         is.na(data.sub$LATITUDE) <- data.sub$LATITUDE > 90
+
         with(data.sub, {
                 maps::map("state", ylim = range(LATITUDE, na.rm = TRUE),
                           xlim = range(LONGITUD, na.rm = TRUE))

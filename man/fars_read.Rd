@@ -23,6 +23,6 @@ orignal variable names (e.g., if they contain a space), uses a somewhat differen
 The file to be read needs to be a csv or a compressed csv. Other file formats cannot be read with this function.
 }
 \examples{
-if (file.exists(make_filename(2015))) {fars_read(make_filename(2015))}
+fars_read(make_filename(2015))
 
 }
