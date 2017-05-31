@@ -1,0 +1,88 @@
+---
+title: "Analysing and plotting of FARS data"
+author: "Valeri Voev"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This package contains several functions to read, analyze and plot data related to fatal injuries suffered in motor vehicle traffic crashes. The source of the data is the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System ([FARS](https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars)). 
+
+## Reading data in
+
+The first step to begin analysing the data is to create a suitable filename for a particular year (or years) using the `make_filename` function. This function takes as a single argument an integer `year` and returns a filename with format "accident_\<year\>.csv.bz2".
+
+Having created the filename as described above the data is read and converted to tibble using the `fars_read` function, the input to which is a string containing the path to the file which is to be loaded. The filename can either be created with `make_filename` or provided explicitly by the user. The data contains 52 variables some of which are
+
+* State (using [FIPS](https://www.census.gov/geo/reference/ansi_statetables.html) codes)
+* Date variables (day, month, year, day of week)
+* Time variables (hour, minute)
+* Persons - Number of forms submitted for persons in motor vehicles 
+* Location information for the accident (latitude, longitude)
+* Etc.
+
+For a full list of all variables see [here](https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/812315)
+
+A glimpse of the data (first 10 variables) is given below:
+```{r, echo=FALSE, results='asis'}
+x <- VRVPackage::fars_read("accident_2015.csv.bz2")
+knitr::kable(head(x[, 1:10], 10))
+```
+
+## Analysis of accidents by month
+
+Once the data has been loaded the function `fars_summarize_years` summarizes the number of accidents for a given year by month. For example, for 2015, the output of `fars_summarize_years(2015)` is as follows:
+
+```{r, echo=FALSE, results='asis'}
+x <- VRVPackage::fars_read("accident_2015.csv.bz2")
+ym <- dplyr::select_(dplyr::mutate_(x, .dots = setNames(list(~YEAR), "year")) , ~MONTH, ~year)
+gpd <- dplyr::group_by_(ym, ~year, ~MONTH)
+sumd <- dplyr::summarize_(gpd, .dots = setNames(list(~n()), "n"))
+
+summary <- tidyr::spread_(sumd, "year", "n")
+knitr::kable(summary)
+```
+
+## Plotting data by state
+
+A final functionality in the package is to plot (map) accidents that happened in a given state for a given year. This is achieved by the `fars_map_state` function which takes as arguments the state number (state.num) as [FIPS](https://www.census.gov/geo/reference/ansi_statetables.html) code and the year. For example for 2015 and state code 8 (Colorado), the map looks as follows:
+
+```{r, echo=FALSE, results='asis'}
+x <- VRVPackage::fars_read("accident_2015.csv.bz2")
+filt <- dplyr::filter_(x, ~STATE == 8)
+require(maps, quietly = TRUE)
+        is.na(filt$LONGITUD) <- filt$LONGITUD > 900
+        is.na(filt$LATITUDE) <- filt$LATITUDE > 90
+
+        with(filt, {
+                maps::map("state", ylim = range(LATITUDE, na.rm = TRUE),
+                          xlim = range(LONGITUD, na.rm = TRUE))
+                graphics::points(LONGITUD, LATITUDE, pch = 46) })
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
