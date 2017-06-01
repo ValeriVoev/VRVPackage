@@ -63,26 +63,3 @@ require(maps, quietly = TRUE)
                 graphics::points(LONGITUD, LATITUDE, pch = 46) })
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
